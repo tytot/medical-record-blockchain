@@ -48,22 +48,28 @@ public class MedicalRecordContract implements ContractInterface {
      * @param {String}  lastName the record holder's last name
      * @param {String}  firstName the record holder's first name
      * @param {String}  id the ID of the record
+     * @param {String}  immunizationName the name of the immunization
+     * @param {String}  dateDoseAdministered the date the dose was administered
+     * @param {String}  doseAdministrator the individual/organization that administered the dose
+     * @param {String}  doseManufacturer the manufacturer of the dose
+     * @param {String}  doseLotNumber the lot number of the dose
+     * @param {String}  doseNote a note to add to the dose listing
      */
     @Transaction
     public MedicalRecord addImmunizationDoseToRecord(MedicalRecordContext ctx, String lastName, String firstName,
-            String id, String immunizationName, String immunizationNote, String dateDoseAdministered,
-            String doseAdministrator, String doseManufacturer, String doseLotNumber) {
+            String id, String immunizationName, String dateDoseAdministered, String doseAdministrator,
+            String doseManufacturer, String doseLotNumber, String doseNote) {
 
         String recordKey = State.makeKey(new String[] { lastName, firstName, id });
         MedicalRecord record = ctx.recordList.getRecord(recordKey);
 
         Immunization immunization = record.getImmunizationByName(immunizationName);
         if (immunization == null) {
-            immunization = Immunization.newImmunization(immunizationName, immunizationNote);
+            immunization = Immunization.newImmunization(immunizationName);
             record.addImmunization(immunization);
         }
         immunization.addDose(Dose.newDose(LocalDate.parse(dateDoseAdministered), doseAdministrator, doseManufacturer,
-                doseLotNumber));
+                doseLotNumber, doseNote));
 
         return record;
     }
@@ -75,6 +81,14 @@ public class MedicalRecordContract implements ContractInterface {
      * @param {String}  lastName the record holder's last name
      * @param {String}  firstName the record holder's first name
      * @param {String}  id the ID of the record
+     * @param {String}  medicationName the name of the medication
+     * @param {String}  medicationDose the medication dosage
+     * @param {String}  medicationFrequency how frequently the medication is taken
+     * @param {String}  medicationStartDate when the record holder began the medication
+     * @param {String}  medicationEndDate when the record holder ended the medication
+     * @param {String}  medicationPrescriber the individual/organizaion that prescribed the medication
+     * @param {String}  medicationManufacturer the manufacturer of the medication
+     * @param {String}  medicationNote a note to add to the medication listing
      */
     @Transaction
     public MedicalRecord addMedicationToRecord(MedicalRecordContext ctx, String lastName, String firstName, String id,

@@ -21,6 +21,9 @@ public class Dose {
     @Property()
     private String lotNumber;
 
+    @Property()
+    private String note;
+
     public LocalDate getDateAdministered() {
         return this.dateAdministered;
     }
@@ -58,9 +61,18 @@ public class Dose {
     }
 
     public static Dose newDose(LocalDate dateAdministered, String administrator, String manufacturer,
-            String lotNumber) {
+            String lotNumber, String note) {
         return new Dose().setDateAdministered(dateAdministered).setAdministrator(administrator)
-                .setManufacturer(manufacturer).setLotNumber(lotNumber);
+                .setManufacturer(manufacturer).setLotNumber(lotNumber).setNote(note);
+    }
+
+    public String getNote() {
+        return this.note;
+    }
+
+    public Dose setNote(String note) {
+        this.note = note;
+        return this;
     }
 
     public JSONObject toJSON() {
@@ -69,6 +81,6 @@ public class Dose {
 
     public static Dose fromJSON(JSONObject json) {
         return Dose.newDose(LocalDate.parse(json.getString("dateAdministered")), json.getString("administrator"),
-                json.getString("manufacturer"), json.getString("lotNumber"));
+                json.getString("manufacturer"), json.getString("lotNumber"), json.getString("note"));
     }
 }

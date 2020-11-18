@@ -16,9 +16,6 @@ public class Immunization {
     @Property()
     private LinkedList<Dose> doses = new LinkedList<Dose>();
 
-    @Property()
-    private String note;
-
     public String getName() {
         return this.name;
     }
@@ -40,17 +37,8 @@ public class Immunization {
         this.doses.add(dose);
     }
 
-    public String getNote() {
-        return this.note;
-    }
-
-    public Immunization setNote(String note) {
-        this.note = note;
-        return this;
-    }
-
-    public static Immunization newImmunization(String name, String note) {
-        return new Immunization().setName(name).setNote(note);
+    public static Immunization newImmunization(String name) {
+        return new Immunization().setName(name);
     }
 
     public JSONObject toJSON() {
@@ -58,7 +46,7 @@ public class Immunization {
     }
 
     public static Immunization fromJSON(JSONObject json) {
-        Immunization immunization = Immunization.newImmunization(json.getString("name"), json.getString("note"));
+        Immunization immunization = Immunization.newImmunization(json.getString("name"));
         JSONArray dosesJSON = json.getJSONArray("doses");
         for (int i = 0; i < dosesJSON.length(); i++) {
             immunization.addDose(Dose.fromJSON(dosesJSON.getJSONObject(i)));
