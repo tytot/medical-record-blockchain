@@ -34,7 +34,7 @@ public class Immunization {
     }
 
     public void addDose(Dose dose) {
-        this.doses.add(dose);
+        this.doses.addFirst(dose);
     }
 
     public static Immunization newImmunization(String name) {

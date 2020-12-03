@@ -29,6 +29,7 @@ public class MedicalRecord extends State {
         this.lastName = lastName;
         this.firstName = firstName;
         this.id = id;
+        this.key = State.makeKey(new String[] { this.lastName, this.firstName, this.id });
     }
 
     public String getLastName() {
@@ -80,16 +81,11 @@ public class MedicalRecord extends State {
     }
 
     public void addImmunization(Immunization immunization) {
-        this.immunizations.add(immunization);
+        this.immunizations.addFirst(immunization);
     }
 
     public void addMedication(Medication medication) {
-        this.medications.add(medication);
-    }
-
-    public MedicalRecord setKey() {
-        this.key = State.makeKey(new String[] { this.lastName, this.firstName, this.id });
-        return this;
+        this.medications.addFirst(medication);
     }
 
         /**

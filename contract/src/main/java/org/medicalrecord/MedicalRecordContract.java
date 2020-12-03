@@ -13,7 +13,7 @@ import org.hyperledger.fabric.contract.annotation.License;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-@Contract(name = "org.medicalrecord", info = @Info(title = "Medical Record Contract", description = "", version = "0.0.1", license = @License(name = "SPDX-License-Identifier: Apache-2.0", url = ""), contact = @Contact(email = "java-contract@example.com", name = "java-contract", url = "http://java-contract.me")))
+@Contract(name = "org.medicalrecord", info = @Info(title = "Medical Record Contract", description = "", version = "0.0.1", license = @License(name = "SPDX-License-Identifier: Apache-2.0", url = ""), contact = @Contact(email = "tylerhlin@gmail.com", name = "medical-record-blockchain", url = "https://github.com/tytot/medical-record-blockchain/tree/master/contract")))
 @Default
 public class MedicalRecordContract implements ContractInterface {
 
@@ -50,7 +50,8 @@ public class MedicalRecordContract implements ContractInterface {
      * @param {String}  id the ID of the record
      * @param {String}  immunizationName the name of the immunization
      * @param {String}  dateDoseAdministered the date the dose was administered
-     * @param {String}  doseAdministrator the individual/organization that administered the dose
+     * @param {String}  doseAdministrator the individual/organization that
+     *                  administered the dose
      * @param {String}  doseManufacturer the manufacturer of the dose
      * @param {String}  doseLotNumber the lot number of the dose
      * @param {String}  doseNote a note to add to the dose listing
@@ -84,9 +85,12 @@ public class MedicalRecordContract implements ContractInterface {
      * @param {String}  medicationName the name of the medication
      * @param {String}  medicationDose the medication dosage
      * @param {String}  medicationFrequency how frequently the medication is taken
-     * @param {String}  medicationStartDate when the record holder began the medication
-     * @param {String}  medicationEndDate when the record holder ended the medication
-     * @param {String}  medicationPrescriber the individual/organizaion that prescribed the medication
+     * @param {String}  medicationStartDate when the record holder began the
+     *                  medication
+     * @param {String}  medicationEndDate when the record holder ended the
+     *                  medication
+     * @param {String}  medicationPrescriber the individual/organizaion that
+     *                  prescribed the medication
      * @param {String}  medicationManufacturer the manufacturer of the medication
      * @param {String}  medicationNote a note to add to the medication listing
      */
