@@ -3,6 +3,8 @@ cd ~/Documents/hyperledger/fabric-samples/test-network
 . scripts/envVar.sh
 ./network.sh up
 ./network.sh createChannel
+cp organizations/peerOrganizations/org1.example.com/connection-org1.yaml ../../medical-records/profiles
+cp organizations/peerOrganizations/org2.example.com/connection-org2.yaml ../../medical-records/profiles
 export PATH=${PWD}/../bin:$PATH
 export FABRIC_CFG_PATH=${PWD}/../config/
 
