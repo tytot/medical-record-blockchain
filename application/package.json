@@ -1,0 +1,16 @@
+{
+  "name": "medical-record-blockchain-application",
+  "version": "1.0.0",
+  "description": "Proof of concept prototype application that handles creating and modifying medical records backed by Hyperledger Fabric.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tyler Lin",
+  "license": "ISC",
+  "dependencies": {
+    "fabric-ca-client": "^2.2.4",
+    "fabric-network": "^2.2.4",
+    "js-yaml": "^3.14.1"
+  }
+}
