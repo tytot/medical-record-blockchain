@@ -32,7 +32,9 @@ public class MedicalRecordContract implements ContractInterface {
      */
     @Transaction
     public MedicalRecord createRecord(MedicalRecordContext ctx, String lastName, String firstName, String id) {
-
+        if (ctx.recordList.getRecord(State.makeKey(new String[] { lastName, firstName, id })) != null) {
+            throw new RuntimeException("A record already exists with that name and ID.");
+        }
         MedicalRecord record = new MedicalRecord(lastName, firstName, id);
 
         System.out.println(record);

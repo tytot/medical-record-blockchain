@@ -1,10 +1,12 @@
 echo '================ STARTING NETWORK ================'
 cd ~/Documents/hyperledger/fabric-samples/test-network
+rm -rf organizations/ordererOrganizations
+rm -rf organizations/peerOrganizations
 . scripts/envVar.sh
 ./network.sh up
 ./network.sh createChannel
-cp organizations/peerOrganizations/org1.example.com/connection-org1.yaml ../../medical-records/profiles
-cp organizations/peerOrganizations/org2.example.com/connection-org2.yaml ../../medical-records/profiles
+cp organizations/peerOrganizations/org1.example.com/connection-org1.yaml ../../medical-records/profiles/connection-org1.yaml
+cp organizations/peerOrganizations/org2.example.com/connection-org2.yaml ../../medical-records/profiles/connection-org2.yaml
 export PATH=${PWD}/../bin:$PATH
 export FABRIC_CFG_PATH=${PWD}/../config/
 

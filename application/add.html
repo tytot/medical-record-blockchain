@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="assets/css/starter.css" />
+        <title>Medical Records</title>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+            <a class="navbar-brand" href="index.html">Medical Records</a>
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbar-markup"
+                aria-controls="navbar-markup"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbar-markup">
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link active" href="index.html"
+                        >Home <span class="sr-only">(current)</span></a
+                    >
+                    <a class="nav-item nav-link" href="#">Add</a>
+                    <a class="nav-item nav-link" href="search.html">Search</a>
+                </div>
+            </div>
+        </nav>
+        <div class="container mt-5">
+            <h1>Add a Medical Record</h1>
+            <form id="new-form" novalidate>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="form-group">
+                            <label for="patient-id" class="h6">Patient ID</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="patient-id"
+                                placeholder="12-34-56"
+                            />
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text h4">Demographics</p>
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <label for="last-name">Last Name</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="last-name"
+                                    placeholder="Doe"
+                                />
+                            </div>
+                            <div class="form-group col">
+                                <label for="first-name">First Name</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="first-name"
+                                    placeholder="John"
+                                />
+                            </div>
+                        </div>
+                        <p class="card-text h4">Medications</p>
+                        <ul id="medications" class="list-group list-group-flush mb-2"></ul>
+                        <template id="medication-template">
+                            <a
+                                class="list-group-item list-group-item-action flex-column align-items-start"
+                            >
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="mb-1">Medication Name</h5>
+                                    <small class="manufacturer">Johnson & Johnson</small>
+                                </div>
+                                <h6 class="mb-2">325 mg, 2 tablets every 4 to 6 hours</h6>
+                                <p class="mb-1"><em>To treat patient's osteoarthritis</em></p>
+                                <small class="prescription"
+                                    >Prescribed by Dr. Doe, Westdyke Memorial Hospital</small
+                                >
+                            </a>
+                        </template>
+                        <button
+                            type="button"
+                            class="btn btn-outline-primary mb-3"
+                            data-toggle="modal"
+                            data-target="#medication-modal"
+                        >
+                            Add Medication
+                        </button>
+                        <p class="card-text h4">Immunizations</p>
+                        <ul id="immunizations" class="list-group list-group-flush mb-2"></ul>
+                        <template id="immunization-template">
+                            <a
+                                class="list-group-item list-group-item-action flex-column align-items-start"
+                            >
+                                <div
+                                    data-toggle="collapse"
+                                    href="#dose-collapse"
+                                    role="button"
+                                    aria-expanded="false"
+                                    aria-controls="dose-collapse"
+                                >
+                                    <h5>
+                                        Vaccine Name
+                                        <span class="badge badge-secondary">2</span>
+                                    </h5>
+                                </div>
+                                <div class="collapse" id="dose-collapse"></div>
+                            </a>
+                        </template>
+                        <button
+                            type="button"
+                            class="btn btn-outline-primary"
+                            data-toggle="modal"
+                            data-target="#immunization-modal"
+                        >
+                            Add Immunization
+                        </button>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="btn btn-primary">Save</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div
+            class="modal fade"
+            id="medication-modal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="medication-modal-label"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <form id="medication-form" novalidate>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="medication-modal-label">
+                                Medication Details
+                            </h5>
+                            <button
+                                type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-label="Close"
+                            >
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="form-row">
+                                    <div class="form-group col-8 col-sm-9 col-lg-10">
+                                        <label for="medication-name" class="h6"
+                                            >Medication Name</label
+                                        >
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="medication-name"
+                                            placeholder="Regular Strength Tylenol"
+                                            required
+                                        />
+                                        <div class="invalid-feedback">
+                                            Please enter the medication name.
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-4 col-sm-3 col-lg-2">
+                                        <label for="medication-dose">Dose</label>
+                                        <div class="input-group">
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                id="medication-dose"
+                                                placeholder="325"
+                                                aria-describedby="medication-dose-append"
+                                            />
+                                            <div class="input-group-append">
+                                                <span
+                                                    class="input-group-text"
+                                                    id="medication-dose-append"
+                                                    >mg</span
+                                                >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-lg-6">
+                                        <label for="medication-dosage">Dosage</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="medication-dosage"
+                                            placeholder="2 tablets every 4 to 6 hours"
+                                        />
+                                    </div>
+                                    <div class="form-group col-6 col-lg-3">
+                                        <label for="medication-start-date">Start Date</label>
+                                        <input
+                                            type="date"
+                                            class="form-control"
+                                            id="medication-start-date"
+                                            data-date-format="mm/dd/yyyy"
+                                            placeholder="mm/dd/yyyy"
+                                        />
+                                    </div>
+                                    <div class="form-group col-6 col-lg-3">
+                                        <label for="medication-end-date">End Date</label>
+                                        <input
+                                            type="date"
+                                            class="form-control"
+                                            id="medication-end-date"
+                                            data-date-format="mm/dd/yyyy"
+                                            placeholder="mm/dd/yyyy"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="medication-reason">Reason</label>
+                                    <textarea
+                                        class="form-control"
+                                        id="medication-reason"
+                                        rows="2"
+                                    ></textarea>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col">
+                                        <label for="medication-prescriber">Prescriber</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="medication-prescriber"
+                                            placeholder="Dr. Doe, Westdyke Memorial Hospital"
+                                        />
+                                    </div>
+                                    <div class="form-group col">
+                                        <label for="medication-manufacturer">Manufacturer</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="medication-manufacturer"
+                                            placeholder="Johnson & Johnson"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                Close
+                            </button>
+                            <button type="button" id="save-medication" class="btn btn-primary">
+                                Save
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="modal fade"
+            id="immunization-modal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="immunization-modal-label"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <form id="immunization-form" novalidate>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="immunization-modal-label">
+                                Immunization Details
+                            </h5>
+                            <button
+                                type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-label="Close"
+                            >
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="form-group">
+                                    <label for="immunization-name" class="h6">Vaccine Name</label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="immunization-name"
+                                        placeholder="Hepatitis B"
+                                        required
+                                    />
+                                    <div class="invalid-feedback">
+                                        Please enter the vaccine name.
+                                    </div>
+                                </div>
+                                <p class="h6">Doses</p>
+                                <ul id="doses" class="list-group mb-3"></ul>
+                                <template id="dose-template">
+                                    <a
+                                        class="list-group-item list-group-item-action flex-column align-items-start"
+                                    >
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="mb-1">
+                                                Dose 1
+                                                <small class="date-administered" class="text-muted"
+                                                    >1970-1-1</small
+                                                >
+                                            </h5>
+                                            <small class="manufacturer">Merck</small>
+                                        </div>
+                                        <h6 class="mb-2">Lot #ABC123ABC</h6>
+                                        <p class="mb-1">Note</p>
+                                        <small class="administration"
+                                            >Administered by Dr. Doe, Westdyke Memorial
+                                            Hospital</small
+                                        >
+                                    </a>
+                                </template>
+                                <template id="dose-form">
+                                    <li class="list-group-item flex-column align-items-start">
+                                        <div class="form-row">
+                                            <div class="form-group col-2">
+                                                <label for="dose-num">Dose #</label>
+                                                <input
+                                                    type="number"
+                                                    class="form-control"
+                                                    id="dose-num"
+                                                    placeholder="1"
+                                                    readonly
+                                                />
+                                            </div>
+                                            <div class="form-group col-5">
+                                                <label for="dose-date">Date Administered</label>
+                                                <input
+                                                    type="date"
+                                                    class="form-control"
+                                                    id="dose-date"
+                                                    placeholder="mm/dd/yyyy"
+                                                    required
+                                                />
+                                                <div class="invalid-feedback">
+                                                    Please enter the date that the dose was
+                                                    administered.
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-5">
+                                                <label for="dose-lot-number">Lot Number</label>
+                                                <input
+                                                    type="text"
+                                                    class="form-control"
+                                                    id="dose-lot-number"
+                                                    placeholder="ABC123DEF"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="dose-note">Note</label>
+                                            <textarea
+                                                class="form-control"
+                                                id="dose-note"
+                                                rows="2"
+                                            ></textarea>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col">
+                                                <label for="dose-administrator"
+                                                    >Administrator</label
+                                                >
+                                                <input
+                                                    type="text"
+                                                    class="form-control"
+                                                    id="dose-administrator"
+                                                    placeholder="Dr. Doe, Westdyke Memorial Hospital"
+                                                />
+                                            </div>
+                                            <div class="form-group col">
+                                                <label for="dose-manufacturer">Manufacturer</label>
+                                                <input
+                                                    type="text"
+                                                    class="form-control"
+                                                    id="dose-manufacturer"
+                                                    placeholder="Merck"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="form-row float-right">
+                                            <button
+                                                id="cancel-dose"
+                                                type="button"
+                                                class="btn btn-outline-secondary mb-2 mr-2"
+                                            >
+                                                Cancel
+                                            </button>
+                                            <button
+                                                id="delete-dose"
+                                                type="button"
+                                                class="btn btn-outline-danger mb-2 mr-2"
+                                                hidden
+                                            >
+                                                Delete
+                                            </button>
+                                            <button
+                                                id="save-dose"
+                                                type="button"
+                                                class="btn btn-outline-primary mb-2"
+                                            >
+                                                Save
+                                            </button>
+                                        </div>
+                                    </li>
+                                </template>
+                                <template id="add-dose">
+                                    <button
+                                        type="button"
+                                        id="add-dose"
+                                        class="list-group-item list-group-item-action list-group-item-secondary"
+                                    >
+                                        Add Dose
+                                    </button>
+                                </template>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                Close
+                            </button>
+                            <button type="button" id="save-immunization" class="btn btn-primary">
+                                Save
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script src="node_modules/jquery/dist/jquery.slim.min.js"></script>
+        <script type="module" src="assets/js/add.js"></script>
+    </body>
+</html>

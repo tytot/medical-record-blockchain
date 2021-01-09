@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="assets/css/starter.css" />
+        <title>Medical Records</title>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">Medical Records</a>
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbar-markup"
+                aria-controls="navbar-markup"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbar-markup">
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link active" href="#"
+                        >Home <span class="sr-only">(current)</span></a
+                    >
+                    <a class="nav-item nav-link" href="add.html">Add</a>
+                    <a class="nav-item nav-link" href="search.html">Search</a>
+                </div>
+            </div>
+        </nav>
+        <div class="container mt-5">
+            <h1>Welcome</h1>
+            <p class="lead">This is a prototype blockchain-based medical record database.</p>
+            <h2>Actions</h2>
+            <div class="row">
+                <div class="col">
+                    <a role="button" class="btn btn-primary btn-lg" href="add.html"> Add Record </a>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col">
+                    <a role="button" class="btn btn-secondary btn-lg" href="search.html">
+                        Search Records
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <script src="node_modules/jquery/dist/jquery.slim.min.js"></script>
+        <script type="module" src="assets/js/index.js"></script>
+    </body>
+</html>

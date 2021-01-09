@@ -10,6 +10,7 @@ public class RecordList {
     public RecordList(Context ctx){
         this.stateList = StateList.getStateList(ctx, MedicalRecord.class.getSimpleName(), MedicalRecord::deserialize);
     }
+
     public RecordList addRecord(MedicalRecord record) {
         this.stateList.addState(record);
         return this;

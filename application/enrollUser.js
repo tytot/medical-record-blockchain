@@ -1,15 +1,15 @@
 'use strict'
 
-const FabricCAServices = require('fabric-ca-client')
-const { Wallets } = require('fabric-network')
-const fs = require('fs')
-const yaml = require('js-yaml')
-const path = require('path')
+import FabricCAServices from 'fabric-ca-client'
+import { Wallets } from 'fabric-network'
+import fs from 'fs'
+import yaml from 'js-yaml'
+import path from 'path'
 
-async function enrollUser(username, orgNum) {
+async function enrollUser(username, password, orgNum) {
     try {
         const connectionProfile = yaml.safeLoad(
-            fs.readFileSync('../connectionProfile.yaml', 'utf8')
+            fs.readFileSync(`../profiles/connection-org${orgNum}.yaml`, 'utf8')
         )
         const caInfo =
             connectionProfile.certificateAuthorities[
@@ -34,8 +34,8 @@ async function enrollUser(username, orgNum) {
             return
         }
         const enrollment = await ca.enroll({
-            enrollmentID: 'user1',
-            enrollmentSecret: 'user1pw',
+            enrollmentID: username,
+            enrollmentSecret: password,
         })
         const x509Identity = {
             credentials: {
@@ -55,7 +55,11 @@ async function enrollUser(username, orgNum) {
     }
 }
 
-enrollUser(process.argv[2], process.argv[3])
+const givenUsername = process.argv[2] || 'username'
+const givenPassword = process.argv[3] || 'password'
+const givenOrgNum = Number.isInteger(process.argv[4]) ? process.argv[4] : 1
+console.log(`Enrolling user ${givenUsername} from organization ${givenOrgNum}...`)
+enrollUser(givenUsername, givenPassword, givenOrgNum)
     .then(() => {
         console.log('Finished enrolling user!')
     })

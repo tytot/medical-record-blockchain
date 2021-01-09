@@ -1,23 +1,23 @@
 'use strict'
 
-const { Wallets, Gateway } = require('fabric-network');
-const fs = require('fs');
-const yaml = require('js-yaml');
+import { Wallets, Gateway } from 'fabric-network'
+import fs from 'fs'
+import yaml from 'js-yaml'
 
-async function createRecord(username) {
+async function createRecord(username, orgNum) {
+    const gateway = new Gateway()
+    const wallet = await Wallets.newFileSystemWallet(
+        `../identity/user/${username}/wallet`
+    )
+    const gatewayOptions = {
+        identity: username,
+        wallet: wallet,
+        discovery: { enabled: true, asLocalhost: true },
+    }
     try {
-        const wallet = await Wallets.newFileSystemWallet(
-            `../identity/user/${username}/wallet`
-        )
-        const gateway = new Gateway()
         const connectionProfile = yaml.safeLoad(
-            fs.readFileSync('../connectionProfile.yaml', 'utf8')
+            fs.readFileSync(`../profiles/connection-org${orgNum}.yaml`, 'utf8')
         )
-        const gatewayOptions = {
-            identity: username,
-            wallet: wallet,
-            discovery: { enabled: true, asLocalhost: true },
-        }
         console.log('Connecting to Fabric gateway...')
         await gateway.connect(connectionProfile, gatewayOptions)
         console.log('Getting network channel "mychannel"...')
@@ -41,11 +41,13 @@ async function createRecord(username) {
     }
 }
 
-createRecord(process.argv[2]).then(() => {
-    console.log('Finished creating record!');
+const givenUsername = process.argv[2] || 'username'
+const givenOrgNum = Number.isInteger(process.argv[3]) ? process.argv[3] : 1
+createRecord(givenUsername, givenOrgNum).then(() => {
+    console.log('Finished creating record!')
 }).catch((e) => {
-    console.log('Failed to create record.');
-    console.log(e);
-    console.log(e.stack);
-    process.exit(-1);
+    console.log('Failed to create record.')
+    console.log(e)
+    console.log(e.stack)
+    process.exit(-1)
 })
