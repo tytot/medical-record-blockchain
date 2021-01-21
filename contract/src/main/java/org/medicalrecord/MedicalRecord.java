@@ -14,22 +14,26 @@ import org.json.JSONPropertyIgnore;
 public class MedicalRecord extends State {
 
     @Property()
+    private String id;
+    @Property()
     private String lastName;
     @Property()
     private String firstName;
-    @Property()
-    private String id;
     @Property()
     private LinkedList<Immunization> immunizations = new LinkedList<Immunization>();
     @Property()
     private LinkedList<Medication> medications = new LinkedList<Medication>();
 
-    MedicalRecord(String lastName, String firstName, String id) {
+    MedicalRecord(String id, String lastName, String firstName) {
         super();
+        this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
-        this.id = id;
-        this.key = State.makeKey(new String[] { this.lastName, this.firstName, this.id });
+        this.key = State.makeKey(new String[] { this.id, this.lastName, this.firstName });
+    }
+
+    public String getID() {
+        return this.id;
     }
 
     public String getLastName() {
@@ -38,10 +42,6 @@ public class MedicalRecord extends State {
 
     public String getFirstName() {
         return this.firstName;
-    }
-
-    public String getid() {
-        return this.id;
     }
 
     public int getNumImmunizations() {
@@ -96,10 +96,10 @@ public class MedicalRecord extends State {
     public static MedicalRecord deserialize(byte[] data) {
         JSONObject json = new JSONObject(new String(data, UTF_8));
 
+        String id = json.getString("ID");
         String lastName = json.getString("lastName");
-        String firstName = json.getString("paperNumber");
-        String id = json.getString("id");
-        MedicalRecord record = new MedicalRecord(lastName, firstName, id);
+        String firstName = json.getString("firstName");
+        MedicalRecord record = new MedicalRecord(id, lastName, firstName);
         JSONArray immunizationsJSON = json.getJSONArray("immunizations");
         for (int i = 0; i < immunizationsJSON.length(); i++) {
             record.addImmunization(Immunization.fromJSON(immunizationsJSON.getJSONObject(i)));

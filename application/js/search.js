@@ -21,8 +21,6 @@
 import '../../node_modules/bootstrap/js/dist/util.js'
 import '../../node_modules/bootstrap/js/dist/collapse.js'
 
-import searchRecords from '../../searchRecords.js'
-
 const firstNameField = document.getElementById('first-name')
 const lastNameField = document.getElementById('last-name')
 const idField = document.getElementById('patient-id')
@@ -51,28 +49,41 @@ form.addEventListener('submit', async function (event) {
         resultsEl.hidden = true
         const spinner = spinnerTemplate.content.firstElementChild.cloneNode(true)
         divider.insertAdjacentElement('afterend', spinner)
-        const results = await searchRecords('Lin', 'Tyler', '12-34-56')
-        spinner.parentNode.removeChild(spinner)
-        resultsEl.hidden = false
-        resultsEl.querySelector('#num-results').textContent = `${results.length} found`
-        for (const result of results) {
-            const resultEl = resultTemplate.content.firstElementChild.cloneNode(true)
-            resultEl.querySelector('.card-header').innerHTML = `ID: <b>${result.id}</b>`
-            resultEl.querySelector('.card-title').textContent = `${result.lastName}, ${result.firstName}`
-            const texts = resultEl.querySelectorAll('.card-text')
-            const numMs = result.numMedications, numIs = result.numImmunizations
-            texts[0].textContent = `${numMs} Medication${numMs === 1 ? '' : 's'}`
-            texts[1].textContent = `${numIs} Immunization${numIs === 1 ? '' : 's'}`
-            resultsEl.insertAdjacentElement('beforeend', resultEl)
+
+        console.log('Searching record on blockchain...')
+        const params = new URLSearchParams()
+        if (idField.value !== '') {
+            params.append('id', idField.value)
         }
-    }
-})
-form.addEventListener('input', function (event) {
-    if (firstNameField.value === '' && lastNameField.value === '' && idField.value === '') {
-        if (!submitButton.disabled) {
-            submitButton.disabled = true
+        if (lastNameField.value !== '') {
+            params.append('lastName', lastNameField.value)
         }
-    } else if (submitButton.disabled) {
-        submitButton.disabled = false
+        if (firstNameField.value !== '') {
+            params.append('firstName', firstNameField.value)
+        }
+        const url = `http://localhost:3001/records?${params.toString()}`
+        console.log('Query: ' + url)
+        fetch(url)
+            .then((res) => res.json())
+            .then((res) => {
+                console.log(res)
+                spinner.parentNode.removeChild(spinner)
+                resultsEl.hidden = false
+                resultsEl.querySelector('#num-results').textContent = `${res.length} found`
+                for (const result of res) {
+                    const resultEl = resultTemplate.content.firstElementChild.cloneNode(true)
+                    resultEl.querySelector('.card-header').innerHTML = `ID: <b>${result.ID}</b>`
+                    resultEl.querySelector('.card-title').textContent = `${result.lastName}, ${result.firstName}`
+                    const texts = resultEl.querySelectorAll('.card-text')
+                    const numMs = result.numMedications, numIs = result.numImmunizations
+                    texts[0].textContent = `${numMs} Medication${numMs === 1 ? '' : 's'}`
+                    texts[1].textContent = `${numIs} Immunization${numIs === 1 ? '' : 's'}`
+                    resultEl.querySelector('.open').addEventListener('click', function (event) {
+                        window.location.href = window.location.href.replace('search', `records?id=${result.ID}`)
+                    })
+                    resultsEl.appendChild(resultEl)
+                }
+            })
+            .catch((error) => console.log(error))
     }
 })

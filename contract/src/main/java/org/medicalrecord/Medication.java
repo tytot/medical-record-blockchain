@@ -1,7 +1,5 @@
 package org.medicalrecord;
 
-import java.time.LocalDate;
-
 import org.hyperledger.fabric.contract.annotation.DataType;
 import org.hyperledger.fabric.contract.annotation.Property;
 import org.json.JSONObject;
@@ -19,10 +17,10 @@ public class Medication {
     private String frequency;
 
     @Property()
-    private LocalDate startDate;
+    private String startDate;
 
     @Property()
-    private LocalDate endDate;
+    private String endDate;
 
     @Property()
     private String prescriber;
@@ -60,20 +58,20 @@ public class Medication {
         return this;
     }
 
-    public LocalDate getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public Medication setStartDate(LocalDate startDate) {
+    public Medication setStartDate(String startDate) {
         this.startDate = startDate;
         return this;
     }
 
-    public LocalDate getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public Medication setEndDate(LocalDate endDate) {
+    public Medication setEndDate(String endDate) {
         this.endDate = endDate;
         return this;
     }
@@ -105,8 +103,8 @@ public class Medication {
         return this;
     }
 
-    public static Medication newMedication(String name, String dose, String frequency, LocalDate startDate,
-            LocalDate endDate, String prescriber, String manufacturer, String note) {
+    public static Medication newMedication(String name, String dose, String frequency, String startDate, String endDate,
+            String prescriber, String manufacturer, String note) {
         return new Medication().setName(name).setDose(dose).setFrequency(frequency).setStartDate(startDate)
                 .setEndDate(endDate).setPrescriber(prescriber).setManufacturer(manufacturer).setNote(note);
     }
@@ -117,7 +115,7 @@ public class Medication {
 
     public static Medication fromJSON(JSONObject json) {
         return Medication.newMedication(json.getString("name"), json.getString("dose"), json.getString("frequency"),
-                LocalDate.parse(json.getString("startDate")), LocalDate.parse(json.getString("endDate")),
-                json.getString("prescriber"), json.getString("manufacturer"), json.getString("note"));
+                json.getString("startDate"), json.getString("endDate"), json.getString("prescriber"),
+                json.getString("manufacturer"), json.getString("note"));
     }
 }

@@ -1,7 +1,5 @@
 package org.medicalrecord;
 
-import java.time.LocalDate;
-
 import org.hyperledger.fabric.contract.annotation.DataType;
 import org.hyperledger.fabric.contract.annotation.Property;
 import org.json.JSONObject;
@@ -10,7 +8,7 @@ import org.json.JSONObject;
 public class Dose {
 
     @Property()
-    private LocalDate dateAdministered;
+    private String dateAdministered;
 
     @Property()
     private String administrator;
@@ -24,11 +22,11 @@ public class Dose {
     @Property()
     private String note;
 
-    public LocalDate getDateAdministered() {
+    public String getDateAdministered() {
         return this.dateAdministered;
     }
 
-    public Dose setDateAdministered(LocalDate dateAdministered) {
+    public Dose setDateAdministered(String dateAdministered) {
         this.dateAdministered = dateAdministered;
         return this;
     }
@@ -60,8 +58,8 @@ public class Dose {
         return this;
     }
 
-    public static Dose newDose(LocalDate dateAdministered, String administrator, String manufacturer,
-            String lotNumber, String note) {
+    public static Dose newDose(String dateAdministered, String administrator, String manufacturer, String lotNumber,
+            String note) {
         return new Dose().setDateAdministered(dateAdministered).setAdministrator(administrator)
                 .setManufacturer(manufacturer).setLotNumber(lotNumber).setNote(note);
     }
@@ -80,7 +78,7 @@ public class Dose {
     }
 
     public static Dose fromJSON(JSONObject json) {
-        return Dose.newDose(LocalDate.parse(json.getString("dateAdministered")), json.getString("administrator"),
+        return Dose.newDose(json.getString("dateAdministered"), json.getString("administrator"),
                 json.getString("manufacturer"), json.getString("lotNumber"), json.getString("note"));
     }
 }

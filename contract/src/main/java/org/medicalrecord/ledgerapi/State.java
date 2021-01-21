@@ -6,6 +6,7 @@ package org.medicalrecord.ledgerapi;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import org.json.JSONObject;
+import org.json.JSONPropertyIgnore;
 
 /**
  * State class. States have a class, unique key, and a lifecycle current state
@@ -23,10 +24,11 @@ public class State {
 
     }
 
-    String getKey() {
+    public String getKey() {
         return this.key;
     }
 
+    @JSONPropertyIgnore
     public String[] getSplitKey() {
         return State.splitKey(this.key);
     }
@@ -53,7 +55,6 @@ public class State {
     }
 
     public static String[] splitKey(String key) {
-        System.out.println("splitting key " + key + "   " + java.util.Arrays.asList(key.split(":")));
         return key.split(":");
     }
 

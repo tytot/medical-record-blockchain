@@ -27,10 +27,10 @@ document.getElementById('save-medication').addEventListener('click', function (e
         const meta = {
             name: medicationNameField.value,
             dose: medicationDoseField.value,
-            dosage: medicationDosageField.value,
+            frequency: medicationDosageField.value,
             startDate: medicationStartDateField.value,
             endDate: medicationEndDateField.value,
-            reason: medicationReasonField.value,
+            note: medicationReasonField.value,
             prescriber: medicationPrescriberField.value,
             manufacturer: medicationManufacturerField.value,
         }
@@ -46,11 +46,11 @@ document.getElementById('save-medication').addEventListener('click', function (e
         writeElement(
             medicationEl.querySelector('h6'),
             (meta.dose === '' ? '' : meta.dose + ' mg') +
-                (meta.dose !== '' && meta.dosage !== '' ? ', ' : '') +
-                meta.dosage
+                (meta.dose !== '' && meta.frequency !== '' ? ', ' : '') +
+                meta.frequency
         )
         writeElement(medicationEl.querySelector('.manufacturer'), meta.manufacturer)
-        writeElement(medicationEl.querySelector('em'), meta.reason)
+        writeElement(medicationEl.querySelector('em'), meta.note)
         writeElement(
             medicationEl.querySelector('.prescription'),
             meta.prescriber === '' ? '' : `Prescribed by ${meta.prescriber}`
@@ -58,10 +58,10 @@ document.getElementById('save-medication').addEventListener('click', function (e
         medicationEl.addEventListener('click', function (event) {
             medicationNameField.value = meta.name
             medicationDoseField.value = meta.dose
-            medicationDosageField.value = meta.dosage
+            medicationDosageField.value = meta.frequency
             medicationStartDateField.value = meta.startDate
             medicationEndDateField.value = meta.endDate
-            medicationReasonField.value = meta.reason
+            medicationReasonField.value = meta.note
             medicationPrescriberField.value = meta.prescriber
             medicationManufacturerField.value = meta.manufacturer
             $('#medication-modal').modal('show')
@@ -70,7 +70,7 @@ document.getElementById('save-medication').addEventListener('click', function (e
         if (meta.endDate !== '') {
             medicationEl.classList.add('list-group-item-light')
         }
-        medicationList.insertAdjacentElement('beforeend', medicationEl)
+        medicationList.appendChild(medicationEl)
         if (medicationModal.reference) {
             medicationModal.reference.parentElement.removeChild(medicationModal.reference)
         }
@@ -100,7 +100,7 @@ function registerAddDoseButton() {
     addDoseButton.addEventListener('click', function (event) {
         addDoseButton.replaceWith(newDoseForm({ num: doseList.childElementCount }))
     })
-    doseList.insertAdjacentElement('beforeend', addDoseButton)
+    doseList.appendChild(addDoseButton)
 }
 
 function newDoseForm(meta) {
@@ -112,12 +112,12 @@ function newDoseForm(meta) {
     const administratorField = doseForm.querySelector('#dose-administrator')
     const manufacturerField = doseForm.querySelector('#dose-manufacturer')
     doseNumberField.value = meta.num
-    const init = !meta.hasOwnProperty('date')
+    const init = !meta.hasOwnProperty('dateAdministered')
     if (!init) {
-        dateField.value = meta.date
+        dateField.value = meta.dateAdministered
     }
-    if (meta.hasOwnProperty('lotNum')) {
-        lotNumberField.value = meta.lotNum
+    if (meta.hasOwnProperty('lotNumber')) {
+        lotNumberField.value = meta.lotNumber
     }
     if (meta.hasOwnProperty('note')) {
         noteField.value = meta.note
@@ -150,8 +150,8 @@ function newDoseForm(meta) {
         } else {
             meta = {
                 num: meta.num,
-                date: dateField.value,
-                lotNum: lotNumberField.value,
+                dateAdministered: dateField.value,
+                lotNumber: lotNumberField.value,
                 note: noteField.value,
                 administrator: administratorField.value,
                 manufacturer: manufacturerField.value,
@@ -170,9 +170,12 @@ function doseElFromMeta(meta) {
     doseEl.meta = meta
     const label = doseEl.querySelector('h5')
     label.textContent = `Dose ${meta.num}`
-    label.insertAdjacentHTML('beforeend', `\n<small class="text-muted">${meta.date}</small>`)
+    label.insertAdjacentHTML(
+        'beforeend',
+        `\n<small class="text-muted">${meta.dateAdministered}</small>`
+    )
     writeElement(doseEl.querySelector('.manufacturer'), meta.manufacturer)
-    writeElement(doseEl.querySelector('h6'), meta.lotNum === '' ? '' : `Lot #${meta.lotNum}`)
+    writeElement(doseEl.querySelector('h6'), meta.lotNumber === '' ? '' : `Lot #${meta.lotNumber}`)
     writeElement(doseEl.querySelector('p'), meta.note)
     writeElement(
         doseEl.querySelector('.administration'),
@@ -208,17 +211,31 @@ document.getElementById('save-immunization').addEventListener('click', function 
         label.textContent = meta.name
         label.insertAdjacentHTML(
             'beforeend',
-            `\n<span class="badge badge-secondary">${meta.doses.length}</span>`
+            `\n<span class="badge badge-secondary">${meta.doses.length}</span>
+            \n<small>(click to expand)</small>`
         )
-        immunizationEl.addEventListener('click', function (event) {
-            immunizationNameField.value = meta.name
-            meta.doses.forEach((doseMeta) => {
-                doseList.appendChild(doseElFromMeta(doseMeta))
-            })
-            $('#immunization-modal').modal('show')
-            immunizationModal.reference = immunizationEl
+        const collapse = immunizationEl.querySelector('.collapse')
+        const inline = immunizationEl.querySelector('.d-inline-flex')
+        meta.doses.forEach((doseMeta) => {
+            const doseEl = doseElFromMeta(doseMeta)
+            collapse.appendChild(doseEl)
+            doseEl.outerHTML = `<div class="my-2 shadow-sm p-3 bg-light align-items-start">${doseEl.innerHTML}</div>`
         })
-        immunizationList.insertAdjacentElement('beforeend', immunizationEl)
+        const collapseID = `dose-collapse-${immunizationList.childElementCount}`
+        collapse.id = collapseID
+        inline.setAttribute('href', `#${collapseID}`)
+        inline.setAttribute('aria-controls', collapseID)
+        immunizationEl.addEventListener('click', function (event) {
+            if (event.target !== inline && !inline.contains(event.target)) {
+                immunizationNameField.value = meta.name
+                meta.doses.forEach((doseMeta) => {
+                    doseList.appendChild(doseElFromMeta(doseMeta))
+                })
+                $('#immunization-modal').modal('show')
+                immunizationModal.reference = immunizationEl
+            }
+        })
+        immunizationList.appendChild(immunizationEl)
         if (immunizationModal.reference) {
             immunizationModal.reference.parentElement.removeChild(immunizationModal.reference)
         }
@@ -243,3 +260,55 @@ function writeElement(element, text) {
         element.textContent = text
     }
 }
+
+const form = document.getElementById('new-form')
+form.addEventListener('submit', function (event) {
+    if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+        form.classList.add('was-validated')
+    } else {
+        event.preventDefault()
+        event.stopPropagation()
+        const patientID = document.getElementById('patient-id').value
+        const lastName = document.getElementById('last-name').value
+        const firstName = document.getElementById('first-name').value
+        const submission = {
+            ID: patientID,
+            lastName: lastName,
+            firstName: firstName,
+            medications: Array.from(medicationList.children).map(
+                (medicationEl) => medicationEl.meta
+            ),
+            immunizations: Array.from(immunizationList.children).map(
+                (immunizationEl) => immunizationEl.meta
+            ),
+        }
+        console.log(JSON.stringify(submission, null, 4))
+
+        const options = {
+            method: 'POST',
+            body: JSON.stringify({
+                orgNum: 1,
+                record: submission,
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }
+        console.log('Creating record on blockchain...')
+        fetch('http://localhost:3001/createRecord', options)
+            .then((res) => res.json())
+            .then((res) => {
+                console.log(res)
+                console.log('Updating record on blockchain...')
+                fetch('http://localhost:3001/updateRecord', options)
+                    .then((res) => res.json())
+                    .then((res) => {
+                        console.log(res)
+                    })
+                    .catch((error) => console.log(error))
+            })
+            .catch((error) => console.log(error))
+    }
+})

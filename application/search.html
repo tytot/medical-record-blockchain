@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="stylesheet" href="assets/css/starter.css" />
+        <link rel="stylesheet" href="css/style.css" />
         <title>Medical Records</title>
     </head>
     <body>
@@ -71,7 +71,6 @@
                     type="submit"
                     id="submit"
                     class="btn btn-primary"
-                    disabled
                 >
                     Search
                 </button>
@@ -93,7 +92,7 @@
                     <small id="num-results" class="text-muted">1 found</small>
                 </h2>
                 <template id="result-template">
-                    <div class="card result-card">
+                    <div class="card result-card my-3">
                         <div class="card-header">ID: <b>12-34-56</b></div>
                         <div class="card-body">
                             <h5 class="card-title">John Doe</h5>
@@ -101,7 +100,7 @@
                             <p class="card-text">1 Immunization</p>
                         </div>
                         <div class="card-footer">
-                            <a href="#" class="btn btn-primary">Open</a>
+                            <a class="open btn btn-primary">Open</a>
                         </div>
                     </div>
                 </template>
@@ -109,6 +108,6 @@
         </div>
 
         <script src="node_modules/jquery/dist/jquery.slim.min.js"></script>
-        <script type="module" src="assets/js/search.js"></script>
+        <script type="module" src="js/search.js"></script>
     </body>
 </html>

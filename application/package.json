@@ -1,35 +1,42 @@
 {
-  "name": "blockchain-medical-record-app",
-  "version": "1.0.0",
-  "description": "Proof of concept prototype application that handles creating and modifying medical records backed by Hyperledger Fabric.",
-  "scripts": {
-    "build": "npm run css",
-    "css-compile": "node-sass --include-path node_modules --output-style compressed --source-map true --source-map-contents true --precision 6 scss -o assets/css/",
-    "css-prefix": "postcss --replace assets/css/starter.css --use autoprefixer --map",
-    "css-purge": "purgecss --css assets/css/starter.css --content index.html --output assets/css/",
-    "css": "npm run css-compile && npm run css-prefix",
-    "server": "serve --listen 3000",
-    "watch": "nodemon -e html,scss -x \"npm run css\"",
-    "test": "npm run css"
-  },
-  "author": "Tyler Lin",
-  "license": "MIT",
-  "dependencies": {
-    "bootstrap": "^4.5.3",
-    "bootstrap-icons": "^1.0.0",
-    "fabric-ca-client": "^2.2.4",
-    "fabric-network": "^2.2.4",
-    "jquery": "^3.5.1",
-    "js-yaml": "^3.14.1",
-    "popper.js": "^1.16.1"
-  },
-  "devDependencies": {
-    "autoprefixer": "^10.0.1",
-    "node-sass": "^4.14.1",
-    "nodemon": "^2.0.5",
-    "postcss": "^8.1.1",
-    "postcss-cli": "^8.1.0",
-    "purgecss": "^3.0.0",
-    "serve": "^11.3.2"
-  }
+    "name": "blockchain-medical-record-app",
+    "version": "1.0.0",
+    "description": "Proof of concept prototype application that handles creating and modifying medical records backed by Hyperledger Fabric.",
+    "scripts": {
+        "api": "node api/api.js",
+        "build": "npm run css",
+        "css-compile": "node-sass --include-path node_modules --output-style compressed --source-map true --source-map-contents true --precision 6 scss -o css/",
+        "css-prefix": "postcss --replace css/style.css --use autoprefixer --map",
+        "css-purge": "purgecss --css css/style.css --content index.html --output css/",
+        "css": "npm run css-compile && npm run css-prefix",
+        "server": "serve --listen 3000",
+        "watch": "nodemon -e html,scss -x \"npm run css\"",
+        "test": "npm run css"
+    },
+    "author": "Tyler Lin",
+    "license": "MIT",
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "bootstrap": "^4.5.3",
+        "bootstrap-icons": "^1.0.0",
+        "cors": "^2.8.5",
+        "express": "^4.17.1",
+        "fabric-ca-client": "^2.2.4",
+        "fabric-network": "^2.2.4",
+        "jquery": "^3.5.1",
+        "js-yaml": "^3.14.1",
+        "popper.js": "^1.16.1"
+    },
+    "devDependencies": {
+        "autoprefixer": "^10.0.1",
+        "axios": "^0.21.1",
+        "browser-resolve": "^2.0.0",
+        "esmify": "^2.1.1",
+        "node-sass": "^4.14.1",
+        "nodemon": "^2.0.5",
+        "postcss": "^8.1.1",
+        "postcss-cli": "^8.1.0",
+        "purgecss": "^3.0.0",
+        "serve": "^11.3.2"
+    }
 }

@@ -23,127 +23,129 @@
             <div class="collapse navbar-collapse" id="navbar-markup">
                 <div class="navbar-nav">
                     <a class="nav-item nav-link" href="index.html">Home</a>
-                    <a class="nav-item nav-link active" href="#"
-                        >Add <span class="sr-only">(current)</span></a
-                    >
+                    <a class="nav-item nav-link" href="add.html">Add</a>
                     <a class="nav-item nav-link" href="search.html">Search</a>
                 </div>
             </div>
         </nav>
         <div class="container mt-5">
-            <h1>Add a Medical Record</h1>
-            <form id="new-form" novalidate>
-                <div class="card">
-                    <div class="card-header">
-                        <div class="form-group">
-                            <label for="patient-id" class="h5">Patient ID</label>
-                            <input
-                                type="text"
-                                class="form-control"
-                                id="patient-id"
-                                placeholder="12-34-56"
-                                pattern="\d\d-\d\d-\d\d"
-                                required
-                            />
-                            <div class="invalid-feedback">Please enter the patient's ID.</div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text h4">Demographics</p>
-                        <div class="form-row">
-                            <div class="form-group col">
-                                <label for="last-name">Last Name</label>
+            <h2 id="error" hidden>An error occurred.</h2>
+            <template id="all">
+                <h1>Medical Record 12-34-56</h1>
+                <form id="new-form" novalidate>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="form-group">
+                                <label for="patient-id" class="h5">Patient ID</label>
                                 <input
                                     type="text"
                                     class="form-control"
-                                    id="last-name"
-                                    placeholder="Doe"
-                                    required
+                                    id="patient-id"
+                                    placeholder="12-34-56"
+                                    pattern="\d\d-\d\d-\d\d"
+                                    disabled
                                 />
-                                <div class="invalid-feedback">
-                                    Please enter the patient's last name.
-                                </div>
-                            </div>
-                            <div class="form-group col">
-                                <label for="first-name">First Name</label>
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    id="first-name"
-                                    placeholder="John"
-                                    required
-                                />
-                                <div class="invalid-feedback">
-                                    Please enter the patient's first name.
-                                </div>
+                                <div class="invalid-feedback">Please enter the patient's ID.</div>
                             </div>
                         </div>
-                        <p class="card-text h4">Medications</p>
-                        <ul id="medications" class="list-group list-group-flush mb-2"></ul>
-                        <template id="medication-template">
-                            <a
-                                class="list-group-item list-group-item-action flex-column align-items-start"
-                            >
-                                <div class="d-flex justify-content-between">
-                                    <h5 class="mb-1">Medication Name</h5>
-                                    <small class="manufacturer">Johnson & Johnson</small>
+                        <div class="card-body">
+                            <p class="card-text h4">Demographics</p>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <label for="last-name">Last Name</label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="last-name"
+                                        placeholder="Doe"
+                                        disabled
+                                    />
+                                    <div class="invalid-feedback">
+                                        Please enter the patient's last name.
+                                    </div>
                                 </div>
-                                <h6 class="mb-2">325 mg, 2 tablets every 4 to 6 hours</h6>
-                                <p class="mb-1"><em>To treat patient's osteoarthritis</em></p>
-                                <small class="prescription"
-                                    >Prescribed by Dr. Doe, Westdyke Memorial Hospital</small
-                                >
-                            </a>
-                        </template>
-                        <button
-                            type="button"
-                            class="btn btn-dark mb-3"
-                            data-toggle="modal"
-                            data-target="#medication-modal"
-                        >
-                            Add Medication
-                        </button>
-                        <p class="card-text h4">Immunizations</p>
-                        <ul id="immunizations" class="list-group list-group-flush mb-2"></ul>
-                        <template id="immunization-template">
-                            <a
-                                class="list-group-item list-group-item-action flex-column align-items-start"
-                            >
-                                <div
-                                    class="d-inline-flex"
-                                    data-toggle="collapse"
-                                    role="button"
-                                    aria-expanded="false"
-                                >
-                                    <h5>
-                                        Vaccine Name
-                                        <span class="badge badge-secondary">2</span>
-                                        <small>(click to expand)</small>
-                                    </h5>
+                                <div class="form-group col">
+                                    <label for="first-name">First Name</label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="first-name"
+                                        placeholder="John"
+                                        disabled
+                                    />
+                                    <div class="invalid-feedback">
+                                        Please enter the patient's first name.
+                                    </div>
                                 </div>
-                                <div class="collapse"></div>
-                            </a>
-                        </template>
-                        <button
-                            type="button"
-                            class="btn btn-dark"
-                            data-toggle="modal"
-                            data-target="#immunization-modal"
-                        >
-                            Add Immunization
-                        </button>
+                            </div>
+                            <p class="card-text h4">Medications</p>
+                            <ul id="medications" class="list-group list-group-flush mb-2"></ul>
+                            <template id="medication-template">
+                                <a
+                                    class="list-group-item list-group-item-action flex-column align-items-start"
+                                >
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="mb-1">Medication Name</h5>
+                                        <small class="manufacturer">Johnson & Johnson</small>
+                                    </div>
+                                    <h6 class="mb-2">325 mg, 2 tablets every 4 to 6 hours</h6>
+                                    <p class="mb-1"><em>To treat patient's osteoarthritis</em></p>
+                                    <small class="prescription"
+                                        >Prescribed by Dr. Doe, Westdyke Memorial Hospital</small
+                                    >
+                                </a>
+                            </template>
+                            <button
+                                type="button"
+                                class="btn btn-dark mb-3"
+                                data-toggle="modal"
+                                data-target="#medication-modal"
+                            >
+                                Add Medication
+                            </button>
+                            <p class="card-text h4">Immunizations</p>
+                            <ul id="immunizations" class="list-group list-group-flush mb-2"></ul>
+                            <template id="immunization-template">
+                                <a
+                                    class="list-group-item list-group-item-action flex-column align-items-start"
+                                >
+                                    <div
+                                        class="d-inline-flex"
+                                        data-toggle="collapse"
+                                        role="button"
+                                        aria-expanded="false"
+                                    >
+                                        <h5>
+                                            Vaccine Name
+                                            <span class="badge badge-secondary">2</span>
+                                            <small>(click to expand)</small>
+                                        </h5>
+                                    </div>
+                                    <div class="collapse"></div>
+                                </a>
+                            </template>
+                            <button
+                                type="button"
+                                class="btn btn-dark"
+                                data-toggle="modal"
+                                data-target="#immunization-modal"
+                            >
+                                Add Immunization
+                            </button>
+                        </div>
+                        <div class="card-footer">
+                            <div class="float-right">
+                                <button type="button" id="delete" class="btn btn-danger btn-lg mr-2">
+                                    Delete
+                                </button>
+                                <button type="submit" id="submit" class="btn btn-primary btn-lg">
+                                    Save
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-footer">
-                        <button
-                            type="submit"
-                            id="submit"
-                            class="btn btn-primary btn-lg float-right"
-                        >
-                            Save
-                        </button>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </template>
         </div>
 
         <div
@@ -462,6 +464,6 @@
         </div>
 
         <script src="node_modules/jquery/dist/jquery.slim.min.js"></script>
-        <script type="module" src="js/add.js"></script>
+        <script type="module" src="js/records.js"></script>
     </body>
 </html>
