@@ -25,13 +25,14 @@
                     <a class="nav-item nav-link" href="index.html">Home</a>
                     <a class="nav-item nav-link" href="add.html">Add</a>
                     <a class="nav-item nav-link" href="search.html">Search</a>
+                    <a class="nav-item nav-link" href="#" id="logout">Logout</a>
                 </div>
             </div>
         </nav>
         <div class="container mt-5">
-            <h2 id="error" hidden>An error occurred.</h2>
+            <h2 id="error" hidden>Nothing here...</h2>
             <template id="all">
-                <h1>Medical Record 12-34-56</h1>
+                <h1 id="title">John Doe <small>12-34-56</small></h1>
                 <form id="new-form" novalidate>
                     <div class="card">
                         <div class="card-header">
@@ -134,11 +135,61 @@
                             </button>
                         </div>
                         <div class="card-footer">
+                            <div
+                                class="alert alert-success alert-dismissible fade show"
+                                role="alert"
+                                hidden
+                            >
+                                Record saved successfully!
+                                <button
+                                    type="button"
+                                    class="close"
+                                    data-dismiss="alert"
+                                    aria-label="Close"
+                                >
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div
+                                class="alert alert-danger alert-dismissible fade show"
+                                role="alert"
+                                hidden
+                            >
+                                <div id="danger-alert-label">Failed to save record.</div>
+                                <button
+                                    type="button"
+                                    class="close"
+                                    data-dismiss="alert"
+                                    aria-label="Close"
+                                >
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
                             <div class="float-right">
-                                <button type="button" id="delete" class="btn btn-danger btn-lg mr-2">
+                                <button
+                                    type="button"
+                                    id="delete"
+                                    class="btn btn-danger btn-lg mr-2"
+                                >
+                                    <span
+                                        id="delete-spinner"
+                                        class="spinner-border"
+                                        style="width: 25px; height: 25px"
+                                        role="status"
+                                        aria-hidden="true"
+                                        hidden
+                                    ></span>
                                     Delete
                                 </button>
                                 <button type="submit" id="submit" class="btn btn-primary btn-lg">
+                                    <span
+                                        id="save-spinner"
+                                        class="spinner-border"
+                                        style="width: 25px; height: 25px"
+                                        role="status"
+                                        aria-hidden="true"
+                                        hidden
+                                    ></span>
                                     Save
                                 </button>
                             </div>
@@ -183,7 +234,7 @@
                                             type="text"
                                             class="form-control"
                                             id="medication-name"
-                                            placeholder="Regular Strength Tylenol"
+                                            placeholder="Tylenol"
                                             required
                                         />
                                         <div class="invalid-feedback">

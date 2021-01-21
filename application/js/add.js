@@ -3,6 +3,39 @@
 import '../../node_modules/bootstrap/js/dist/util.js'
 import '../../node_modules/bootstrap/js/dist/collapse.js'
 import '../../node_modules/bootstrap/js/dist/modal.js'
+import '../../node_modules/bootstrap/js/dist/alert.js'
+
+document.getElementById('logout').addEventListener('click', function (event) {
+    const cookies = document.cookie.split('; ')
+    const options = {
+        method: 'POST',
+        body: JSON.stringify({
+            username: cookies.find((row) => row.startsWith('username')).split('=')[1],
+            orgNum: cookies.find((row) => row.startsWith('orgNum')).split('=')[1],
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    }
+    console.log('Disenrolling user...')
+    fetch('http://localhost:3001/disenrollUser', options)
+        .then((res) => {
+            const json = res.json()
+            if (!res.ok) {
+                throw new Error(json.message)
+            }
+            return json
+        })
+        .then((res) => {
+            console.log(res)
+            const url = new URL(window.location.href)
+            url.pathname = '/login'
+            window.location.href = url
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+})
 
 const medicationList = document.getElementById('medications')
 const medicationTemplate = document.getElementById('medication-template')
@@ -262,6 +295,10 @@ function writeElement(element, text) {
 }
 
 const form = document.getElementById('new-form')
+const saveSpinner = document.getElementById('save-spinner')
+const saveButton = document.getElementById('submit')
+const errorAlert = document.querySelector('.alert')
+
 form.addEventListener('submit', function (event) {
     if (!form.checkValidity()) {
         event.preventDefault()
@@ -286,6 +323,9 @@ form.addEventListener('submit', function (event) {
         }
         console.log(JSON.stringify(submission, null, 4))
 
+        saveSpinner.hidden = false
+        saveButton.disabled = true
+        errorAlert.hidden = true
         const options = {
             method: 'POST',
             body: JSON.stringify({
@@ -298,17 +338,48 @@ form.addEventListener('submit', function (event) {
         }
         console.log('Creating record on blockchain...')
         fetch('http://localhost:3001/createRecord', options)
-            .then((res) => res.json())
+            .then((res) => {
+                const json = res.json()
+                if (!res.ok) {
+                    throw new Error(json.message)
+                }
+                return json
+            })
             .then((res) => {
                 console.log(res)
                 console.log('Updating record on blockchain...')
                 fetch('http://localhost:3001/updateRecord', options)
-                    .then((res) => res.json())
+                    .then((res) => {
+                        const json = res.json()
+                        if (!res.ok) {
+                            throw new Error(json.message)
+                        }
+                        return json
+                    })
                     .then((res) => {
                         console.log(res)
+                        saveSpinner.hidden = true
+                        saveButton.disabled = false
+                        const url = new URL(window.location.href)
+                        const params = url.searchParams
+                        params.set('id', submission.ID)
+                        url.pathname = '/records'
+                        window.location.href = url
                     })
-                    .catch((error) => console.log(error))
+                    .catch((error) => {
+                        console.log(error)
+                        saveSpinner.hidden = true
+                        saveButton.disabled = false
+                        errorAlert.hidden = false
+                        $('.alert').alert()
+                    })
             })
-            .catch((error) => console.log(error))
+            .catch((error) => {
+                console.log(error)
+                saveSpinner.hidden = true
+                saveButton.disabled = false
+                errorAlert.hidden = false
+                $('.alert').alert()
+            })
     }
 })

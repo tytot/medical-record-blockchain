@@ -1,4 +1,4 @@
 echo '================ STOPPING NETWORK ================'
-cd ~/Documents/hyperledger/fabric-samples/test-network
+cd ~/network
 ./network.sh down
 cd ../../medical-records

@@ -77,7 +77,7 @@ function registerUser(username, secret, orgNum, adminUsername) {
                         enrollmentID: username,
                         enrollmentSecret: secret,
                         maxEnrollments: -1,
-                        role: 'user',
+                        role: 'client',
                     },
                     adminUser
                 )

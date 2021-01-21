@@ -3,16 +3,15 @@
 import '../../node_modules/bootstrap/js/dist/util.js'
 import '../../node_modules/bootstrap/js/dist/collapse.js'
 import '../../node_modules/bootstrap/js/dist/modal.js'
+import '../../node_modules/bootstrap/js/dist/alert.js'
 
-const url = window.location.href
-const params = new URLSearchParams(url.slice(url.indexOf('?'), url.indexOf('?') + 12))
+const params = new URL(window.location.href).searchParams
 const id = params.get('id')
-const queryURL = `http://localhost:3001/records/${id}`
-console.log('Query: ' + queryURL)
-fetch(queryURL)
+const url = `http://localhost:3001/records/${id}`
+console.log('Query: ' + url)
+fetch(url)
     .then((res) => {
         if (res.status === 500) {
-            document.getElementById('error').textContent = `Medical Record ${id} does not exist.`
             throw new Error('Record does not exist.')
         }
         return res.json()
@@ -22,6 +21,9 @@ fetch(queryURL)
         const record = document.getElementById('all').content.cloneNode(true)
         document.querySelector('.container').appendChild(record)
 
+        document.getElementById(
+            'title'
+        ).innerHTML = `${res.firstName} ${res.lastName} <small>${id}</small>`
         const idField = document.getElementById('patient-id')
         const lastNameField = document.getElementById('last-name')
         const firstNameField = document.getElementById('first-name')
@@ -263,6 +265,9 @@ fetch(queryURL)
             return immunizationEl
         }
         res.immunizations.forEach(function (meta) {
+            meta.doses.forEach(function (doseMeta, index) {
+                meta.doses[index].num = index + 1
+            })
             const immunizationEl = immunizationElFromMeta(meta)
             immunizationList.appendChild(immunizationEl)
         })
@@ -306,23 +311,57 @@ fetch(queryURL)
                 element.textContent = text
             }
         }
+        const form = document.getElementById('new-form')
+        const deleteSpinner = document.getElementById('delete-spinner')
+        const deleteButton = document.getElementById('delete')
+        const saveSpinner = document.getElementById('save-spinner')
+        const saveButton = document.getElementById('submit')
+        const errorAlert = document.querySelector('.alert-danger')
+        const errorAlertLabel = document.querySelector('#danger-alert-label')
+        const successAlert = document.querySelector('.alert-success')
 
-        document.getElementById('delete').addEventListener('click', function (event) {
+        deleteButton.addEventListener('click', function (event) {
+            deleteSpinner.hidden = false
+            deleteButton.disabled = true
+            saveButton.disabled = true
+            errorAlert.hidden = true
+            successAlert.hidden = true
+
             const patientID = idField.value
             const options = {
                 method: 'DELETE',
             }
             console.log('Deleting record on blockchain...')
             fetch(`http://localhost:3001/records/${patientID}`, options)
-                .then((res) => res.json())
+                .then((res) => {
+                    const json = res.json()
+                    if (!res.ok) {
+                        throw new Error(json.message)
+                    }
+                    return json
+                })
                 .then((res) => {
                     console.log(res)
-                    window.location.href = 'index.html'
+                    deleteSpinner.hidden = true
+                    deleteButton.disabled = false
+                    saveButton.disabled = false
+                    const url = new URL(window.location.href)
+                    const params = url.searchParams
+                    params.set('deleted', params.get('id'))
+                    params.delete('id')
+                    url.params = ''
+                    window.location.href = url
                 })
-                .catch((error) => console.log(error))
+                .catch((error) => {
+                    console.log(error)
+                    deleteSpinner.hidden = true
+                    deleteButton.disabled = false
+                    saveButton.disabled = false
+                    errorAlert.hidden = false
+                    errorAlertLabel.textContent = 'Failed to delete record.'
+                    $('.alert-danger').alert()
+                })
         })
-
-        const form = document.getElementById('new-form')
         form.addEventListener('submit', function (event) {
             if (!form.checkValidity()) {
                 event.preventDefault()
@@ -347,6 +386,11 @@ fetch(queryURL)
                 }
                 console.log(JSON.stringify(submission, null, 4))
 
+                saveSpinner.hidden = false
+                deleteButton.disabled = true
+                saveButton.disabled = true
+                errorAlert.hidden = true
+                successAlert.hidden = true
                 const options = {
                     method: 'POST',
                     body: JSON.stringify({
@@ -359,11 +403,30 @@ fetch(queryURL)
                 }
                 console.log('Updating record on blockchain...')
                 fetch('http://localhost:3001/updateRecord', options)
-                    .then((res) => res.json())
+                    .then((res) => {
+                        const json = res.json()
+                        if (!res.ok) {
+                            throw new Error(json.message)
+                        }
+                        return json
+                    })
                     .then((res) => {
                         console.log(res)
+                        saveSpinner.hidden = true
+                        deleteButton.disabled = false
+                        saveButton.disabled = false
+                        successAlert.hidden = false
+                        $('.alert-success').alert()
                     })
-                    .catch((error) => console.log(error))
+                    .catch((error) => {
+                        console.log(error)
+                        saveSpinner.hidden = true
+                        deleteButton.disabled = false
+                        saveButton.disabled = false
+                        errorAlert.hidden = false
+                        errorAlertLabel.textContent = 'Failed to save record.'
+                        $('.alert-danger').alert()
+                    })
             }
         })
     })

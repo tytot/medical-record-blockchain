@@ -93,7 +93,7 @@ if (flag === '--create') {
         firstName: 'John',
     }
     connection
-        .connect(givenOrgNum, 'mychannel', 'medicalrecordcontract')
+        .connect('admin', givenOrgNum, 'mychannel', 'medicalrecordcontract')
         .then(function (contract) {
             return createRecord(
                 contract,
@@ -121,7 +121,7 @@ if (flag === '--create') {
         immunizations: [],
     }
     connection
-        .connect(givenOrgNum, 'mychannel', 'medicalrecordcontract')
+        .connect('admin', givenOrgNum, 'mychannel', 'medicalrecordcontract')
         .then(function (contract) {
             return updateRecord(contract, sampleRecord)
         })
@@ -137,7 +137,7 @@ if (flag === '--create') {
     const parsedOrgNum = parseInt(process.argv[3])
     const givenOrgNum = isNaN(parsedOrgNum) ? 1 : parsedOrgNum
     connection
-        .connect(givenOrgNum, 'mychannel', 'medicalrecordcontract')
+        .connect('admin', givenOrgNum, 'mychannel', 'medicalrecordcontract')
         .then(function (contract) {
             return readRecord(contract, '12-34-56')
         })
@@ -153,7 +153,7 @@ if (flag === '--create') {
     const parsedOrgNum = parseInt(process.argv[3])
     const givenOrgNum = isNaN(parsedOrgNum) ? 1 : parsedOrgNum
     connection
-        .connect(givenOrgNum, 'mychannel', 'medicalrecordcontract')
+        .connect('admin', givenOrgNum, 'mychannel', 'medicalrecordcontract')
         .then(function (contract) {
             return deleteRecord(contract, '12-34-56')
         })
@@ -169,7 +169,7 @@ if (flag === '--create') {
     const parsedOrgNum = parseInt(process.argv[3])
     const givenOrgNum = isNaN(parsedOrgNum) ? 1 : parsedOrgNum
     connection
-        .connect(givenOrgNum, 'mychannel', 'medicalrecordcontract')
+        .connect('admin', givenOrgNum, 'mychannel', 'medicalrecordcontract')
         .then(function (contract) {
             return searchRecords(contract, '12-34-56', '', '')
         })

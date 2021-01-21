@@ -1,5 +1,5 @@
 echo '================ STARTING NETWORK ================'
-cd ~/Documents/hyperledger/fabric-samples/test-network
+cd ~/network
 rm -rf organizations/ordererOrganizations
 rm -rf organizations/peerOrganizations
 . scripts/envVar.sh
@@ -11,14 +11,14 @@ export PATH=${PWD}/../bin:$PATH
 export FABRIC_CFG_PATH=${PWD}/../config/
 
 echo '============ DEPLOYING SMART CONTRACT ============'
-cd ../../medical-records/contract
+cd ../contract
 ./gradlew build
 cd ..
 
 export CORE_PEER_TLS_ENABLED=true
 export CORE_PEER_LOCALMSPID="Org1MSP"
-export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/../fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
-export CORE_PEER_MSPCONFIGPATH=${PWD}/../fabric-samples/test-network/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+export CORE_PEER_MSPCONFIGPATH=${PWD}/network/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
 export CORE_PEER_ADDRESS=localhost:7051
 peer lifecycle chaincode package cp.tar.gz --lang java --path ./contract --label cp_0
 peer lifecycle chaincode install cp.tar.gz
@@ -35,8 +35,8 @@ peer lifecycle chaincode approveformyorg  --orderer localhost:7050 --ordererTLSH
 peer lifecycle chaincode checkcommitreadiness --channelID mychannel --name medicalrecordcontract -v 0 --sequence 1
 
 export CORE_PEER_LOCALMSPID="Org2MSP"
-export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/../fabric-samples/test-network/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
-export CORE_PEER_MSPCONFIGPATH=${PWD}/../fabric-samples/test-network/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
+export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/network/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
+export CORE_PEER_MSPCONFIGPATH=${PWD}/network/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
 export CORE_PEER_ADDRESS=localhost:9051
 peer lifecycle chaincode install cp.tar.gz
 export PACKAGE_ID=$(peer lifecycle chaincode queryinstalled --output json | jq -r '.installed_chaincodes[0].package_id')

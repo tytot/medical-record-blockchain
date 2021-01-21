@@ -27,10 +27,17 @@
                     >
                     <a class="nav-item nav-link" href="add.html">Add</a>
                     <a class="nav-item nav-link" href="search.html">Search</a>
+                    <a class="nav-item nav-link" href="#" id="logout">Logout</a>
                 </div>
             </div>
         </nav>
         <div class="container mt-5">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" hidden>
+                <div id="alert-label">Record successfully deleted.</div>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
             <h1>Welcome</h1>
             <p class="lead">This is a prototype blockchain-based medical record database.</p>
             <h2>Actions</h2>

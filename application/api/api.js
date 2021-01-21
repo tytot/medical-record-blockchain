@@ -77,7 +77,7 @@ app.post('/createRecord', (req, res) => {
         res.status(400).send({ message: 'Invalid request body.' })
     } else {
         connection
-            .connect(body.orgNum, 'mychannel', 'medicalrecordcontract')
+            .connect('admin', body.orgNum, 'mychannel', 'medicalrecordcontract')
             .then(function (contract) {
                 return createRecord(
                     contract,
@@ -102,7 +102,7 @@ app.post('/updateRecord', (req, res) => {
         res.status(400).send({ message: 'Invalid request body.' })
     } else {
         connection
-            .connect(body.orgNum, 'mychannel', 'medicalrecordcontract')
+            .connect('admin', body.orgNum, 'mychannel', 'medicalrecordcontract')
             .then(function (contract) {
                 return updateRecord(contract, body.record)
             })
@@ -117,7 +117,7 @@ app.post('/updateRecord', (req, res) => {
 
 app.get('/records', (req, res) => {
     connection
-        .connect(1, 'mychannel', 'medicalrecordcontract')
+        .connect('admin', 1, 'mychannel', 'medicalrecordcontract')
         .then(function (contract) {
             if (req.query.hasOwnProperty('id')) {
                 var id = req.query.id
@@ -146,7 +146,7 @@ app.get('/records', (req, res) => {
 
 app.get('/records/:id', (req, res) => {
     connection
-        .connect(1, 'mychannel', 'medicalrecordcontract')
+        .connect('admin', 1, 'mychannel', 'medicalrecordcontract')
         .then(function (contract) {
             return readRecord(contract, req.params.id)
         })
@@ -160,7 +160,7 @@ app.get('/records/:id', (req, res) => {
 
 app.delete('/records/:id', (req, res) => {
     connection
-        .connect(1, 'mychannel', 'medicalrecordcontract')
+        .connect('admin', 1, 'mychannel', 'medicalrecordcontract')
         .then(function (contract) {
             return deleteRecord(contract, req.params.id)
         })

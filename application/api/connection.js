@@ -6,13 +6,13 @@ const yaml = require('js-yaml')
 
 const gateway = new Gateway()
 
-exports.connect = function connect(orgNum, channelName, contractName) {
+exports.connect = function connect(username, orgNum, channelName, contractName) {
     return new Promise(async function (resolve, reject) {
         const wallet = await Wallets.newFileSystemWallet(
             `../../wallets/org${orgNum}`
         )
         const gatewayOptions = {
-            identity: 'admin',
+            identity: username,
             wallet: wallet,
             discovery: { enabled: true, asLocalhost: true },
         }
@@ -20,7 +20,7 @@ exports.connect = function connect(orgNum, channelName, contractName) {
             const connectionProfile = yaml.safeLoad(
                 fs.readFileSync(`../../profiles/connection-org${orgNum}.yaml`, 'utf8')
             )
-            console.log('Connecting to Fabric gateway...')
+            console.log('\nConnecting to Fabric gateway...')
             await gateway.connect(connectionProfile, gatewayOptions)
             console.log(`Getting network channel "${channelName}"...`)
             const network = await gateway.getNetwork('mychannel')

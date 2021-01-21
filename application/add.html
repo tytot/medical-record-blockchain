@@ -27,6 +27,7 @@
                         >Add <span class="sr-only">(current)</span></a
                     >
                     <a class="nav-item nav-link" href="search.html">Search</a>
+                    <a class="nav-item nav-link" href="#" id="logout">Logout</a>
                 </div>
             </div>
         </nav>
@@ -134,11 +135,25 @@
                         </button>
                     </div>
                     <div class="card-footer">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert" hidden>
+                            Failed to save record.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                         <button
                             type="submit"
                             id="submit"
                             class="btn btn-primary btn-lg float-right"
                         >
+                            <span
+                                id="save-spinner"
+                                class="spinner-border"
+                                style="width: 25px; height: 25px;"
+                                role="status"
+                                aria-hidden="true"
+                                hidden
+                            ></span>
                             Save
                         </button>
                     </div>
@@ -181,7 +196,7 @@
                                             type="text"
                                             class="form-control"
                                             id="medication-name"
-                                            placeholder="Regular Strength Tylenol"
+                                            placeholder="Tylenol"
                                             required
                                         />
                                         <div class="invalid-feedback">
